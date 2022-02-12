@@ -1,10 +1,3 @@
-# PLAN:
-# 
-# Loop, keyboard.wait, read event, store event in list of tuples
-
-# List of tuples: (Key, press/release, Time of press)
-
-        
 from pynput import keyboard, mouse
 from pynput.keyboard import Key
 import time
@@ -124,12 +117,3 @@ if __name__ == "__main__":
                         chosen = True
                     except FileNotFoundError as e:
                         print(e)
-
-
-# After recording, write dict into txt on separate lines
-
-# Add feature to run recordings
-
-# 1.0: Run from command action
-# 2.0: GUI
-

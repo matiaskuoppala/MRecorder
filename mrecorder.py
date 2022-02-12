@@ -20,16 +20,13 @@ class Recorder():
             self.m_listener.stop()
             return False
         elif key not in self.holding_key:
-            print("pressed key")
             self.actions.append(("keyboard", key, "press", time.time()))
             self.holding_key.append(key)
-            print(self.actions)
 
     def on_release(self, key):
         if key in self.holding_key:
             self.holding_key.remove(key)
         self.actions.append(("keyboard", key, "release", time.time()))
-        print(self.actions)
 
     def on_click(self, x, y, button, pressed):
         p = ""
@@ -75,12 +72,10 @@ class Player():
         prev_time = 0
         for line in self.macro:
             action = tuple(map(str, line.strip().split(',')))
-            print(action)
             if action[0] == "keyboard":
                 if action[2] == "press":
                     eval("self.keyboard.press(" + action[1] + ")")
                 elif action[2] == "release":
-                    print(action[1])
                     eval("self.keyboard.release(" + action[1] + ")")
             elif action[0] == "mouse":
                 if action[2] == "press":

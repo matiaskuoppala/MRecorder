@@ -1,5 +1,3 @@
 # Mrecorder
 
-Mrecorder is a simple program for recording keyboard and mouse macros.
-
-\n
+Mrecorder is a simple program for recording and running keyboard and mouse macros.

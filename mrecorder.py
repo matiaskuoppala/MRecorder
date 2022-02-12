@@ -6,6 +6,7 @@
 
         
 from pynput import keyboard, mouse
+from pynput.keyboard import Key
 import time
 import os
 
@@ -27,7 +28,7 @@ class Recorder():
             return False
         elif key not in self.holding_key:
             print("pressed key")
-            self.r.append(("keyboard", str(key), "press", time.time()))
+            self.r.append(("keyboard", key, "press", time.time()))
             self.holding_key.append(key)
             print(self.r)
 
@@ -61,19 +62,42 @@ class Recorder():
         name = input("Enter macro name: ") + ".txt"
         f = open(name, "w")
         print("Saving macro..")
+        # TODO: Ask "do you want to overwrite?" for already existing files
         for action in self.r:
-            f.write(str(action))
-            f.write('\n')
+            for a in action:
+                f.write(str(a))
+                f.write(',')
+            f.write('\n')    
         print("Macro saved as " + name + ".")
 
 # Play macro from given file
 class Player():
 
     def __init__(self, file):
-        pass
+        self.keyboard = keyboard.Controller()
+        self.mouse = mouse.Controller()
+        self.macro = file
 
     def play(self):
-        pass
+        prev_time = 0
+        for line in self.macro:
+            action = tuple(map(str, line.strip().split(',')))
+            print(action)
+            if action[0] == "keyboard":
+                if action[2] == "press":
+                    eval("self.keyboard.press(" + action[1] + ")")
+                elif action[2] == "release":
+                    print(action[1])
+                    eval("self.keyboard.release(" + action[1] + ")")
+            elif action[0] == "mouse":
+                if action[2] == "press":
+                    eval("self.mouse.press(" + action[1] + ")")
+                elif action[2] == "release":
+                    eval("self.mouse.release(" + action[1] + ")")
+            if prev_time != 0:
+                time.sleep(float(action[3]) - prev_time)
+            prev_time = float(action[3])
+
 
 # Program entry point
 if __name__ == "__main__":
@@ -82,7 +106,7 @@ if __name__ == "__main__":
         if action == 'r':
             recorder = Recorder()
             recorder.start()
-        elif action =='m':
+        elif action =='p':
             chosen = False
             while not chosen:
                 user_input = input("Enter macro name (press 'l' to list all macros): ")
@@ -106,6 +130,6 @@ if __name__ == "__main__":
 
 # Add feature to run recordings
 
-# 1.0: Run from command line
+# 1.0: Run from command action
 # 2.0: GUI
 

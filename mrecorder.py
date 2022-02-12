@@ -8,7 +8,7 @@ import os
 class Recorder():
 
     def __init__(self):
-        self.r = []
+        self.actions = []
         self.holding_key = []
         self.holding_mouse = []
         self.m_listener = mouse.Listener(on_click=self.on_click)
@@ -21,15 +21,15 @@ class Recorder():
             return False
         elif key not in self.holding_key:
             print("pressed key")
-            self.r.append(("keyboard", key, "press", time.time()))
+            self.actions.append(("keyboard", key, "press", time.time()))
             self.holding_key.append(key)
-            print(self.r)
+            print(self.actions)
 
     def on_release(self, key):
         if key in self.holding_key:
             self.holding_key.remove(key)
-        self.r.append(("keyboard", key, "release", time.time()))
-        print(self.r)
+        self.actions.append(("keyboard", key, "release", time.time()))
+        print(self.actions)
 
     def on_click(self, x, y, button, pressed):
         p = ""
@@ -43,7 +43,7 @@ class Recorder():
             if button in self.holding_mouse:
                 self.holding_mouse.remove(button)
             p = "release"
-        self.r.append(("mouse", button, "release", time.time()))
+        self.actions.append(("mouse", button, "release", time.time()))
 
     def start(self):
         self.m_listener.start()
@@ -56,7 +56,7 @@ class Recorder():
         f = open(name, "w")
         print("Saving macro..")
         # TODO: Ask "do you want to overwrite?" for already existing files
-        for action in self.r:
+        for action in self.actions:
             for a in action:
                 f.write(str(a))
                 f.write(',')

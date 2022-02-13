@@ -83,7 +83,7 @@ class Recorder():
         print("Macro saved as " + name + ".")
 
 
-# Play macro from given file
+# Plays a macro from a txt file.
 class Player():
 
     def __init__(self, file):
@@ -136,5 +136,3 @@ if __name__ == "__main__":
                         chosen = True
                     except FileNotFoundError as e:
                         print(e)
-
-# TODO: Figure out why macro is not playing currently

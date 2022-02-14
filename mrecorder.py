@@ -36,6 +36,7 @@ class Recorder():
         # Stop and save when esc pressed
         if key == keyboard.Key.esc:
             self.m_listener.stop()
+            print("Recording finished.")
             return False
         elif not self.recording:
             if key == keyboard.KeyCode.from_char('r'):
@@ -69,11 +70,14 @@ class Recorder():
 
     # Save action list into txt
     def save(self, actions):
-        print("Recording finished.")
         name = input("Enter macro name: ") + ".txt"
+        if name in os.listdir(os.getcwd()):
+            print("A macro named " + name + " already exists.")
+            choice = input("Do you want to overwrite (y/n)?")
+            if (choice == "n"):
+                self.save(actions)
         f = open(name, "w")
         print("Saving macro..")
-        # TODO: Ask "do you want to overwrite?" for already existing files
         
         for action in actions:
             for a in action:
